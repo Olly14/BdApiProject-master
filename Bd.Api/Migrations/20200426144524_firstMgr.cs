@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bd.Api.Migrations
 {
-    public partial class firstMigrations : Migration
+    public partial class firstMgr : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,13 +20,27 @@ namespace Bd.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Prices",
+                columns: table => new
+                {
+                    PricesId = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prices", x => x.PricesId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
                     ProductId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsBlocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,7 +60,9 @@ namespace Bd.Api.Migrations
                     Town = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     ConfirmedPassword = table.Column<string>(nullable: true),
-                    PostCode = table.Column<string>(nullable: true)
+                    PostCode = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsBlocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,8 +101,8 @@ namespace Bd.Api.Migrations
                 columns: table => new
                 {
                     OrderItemId = table.Column<string>(nullable: false),
-                    OrderId = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false),
+                    OrderId = table.Column<string>(nullable: true),
+                    ProductId = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     UnitPrice = table.Column<double>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
@@ -99,13 +115,13 @@ namespace Bd.Api.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -133,6 +149,9 @@ namespace Bd.Api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Prices");
 
             migrationBuilder.DropTable(
                 name: "Orders");

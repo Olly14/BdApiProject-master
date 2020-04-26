@@ -5,11 +5,13 @@ using Bd.Api.Data.Infrastructure.Persistence;
 using Bd.Api.Data.Infrastructure.Persistence.DropDownListsRepository;
 using Bd.Api.Data.Infrastructure.Persistence.OrderItemsRepo;
 using Bd.Api.Data.Infrastructure.Persistence.OrdersRepo;
+using Bd.Api.Data.Infrastructure.Persistence.PricesRepo;
 using Bd.Api.Data.Infrastructure.Persistence.ProductsRepo;
 using Bd.Api.Data.Infrastructure.Repository.AppUserRepositiry;
 using Bd.Api.Data.Infrastructure.Repository.IDropDownListsRepository;
 using Bd.Api.Data.Infrastructure.Repository.OrderItemRepository;
 using Bd.Api.Data.Infrastructure.Repository.OrderRepository;
+using Bd.Api.Data.Infrastructure.Repository.PricesRepository;
 using Bd.Api.Data.Infrastructure.Repository.ProductRepository;
 using Bd.Api.Domain;
 using Bd.Api.ModelMappers.AppUserMappers;
@@ -67,9 +69,11 @@ namespace Bd.Api
             services.AddScoped<IUnitOfWork<Product>, UnitOfWorkProductRepo>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            services.AddScoped<IGenderRepository, GenderRepository>()
+            services.AddScoped<IGenderRepository, GenderRepository>();
+            services.AddScoped<IPricesRepository, PricesRepository>();
+            services.AddScoped<IUnitOfWork<Prices>, UnitOfWorkPricesRepo>();
 
-;        }
+            ;        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

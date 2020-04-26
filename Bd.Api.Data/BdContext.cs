@@ -32,12 +32,12 @@ namespace Bd.Api.Data
             modelBuilder.Entity<OrderItem>()
                 .HasOne<Order>(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
-                .HasForeignKey(oi => oi.OrderId).IsRequired();
+                .HasForeignKey(oi => oi.OrderId);
 
             modelBuilder.Entity<OrderItem>()
              .HasOne<Product>(oi => oi.Product)
              .WithMany(p => p.OrderItems)
-             .HasForeignKey(oi => oi.ProductId).IsRequired();
+             .HasForeignKey(oi => oi.ProductId);
 
 
             modelBuilder.Entity<Order>()
@@ -51,10 +51,6 @@ namespace Bd.Api.Data
                 .WithMany(c => c.AppUsers)
                .HasForeignKey(a => a.GenderId).IsRequired();
 
-            //modelBuilder.Entity<Account>()
-            //    .HasOne<AccountType>(a => a.AccountType)
-            //    .WithMany(acctType => acctType.Accounts)
-            //    .HasForeignKey(a => a.AccountTypeId).IsRequired();
 
             //modelBuilder.Entity<Account>()
             //    .HasOne<Currency>(a => a.Currency)

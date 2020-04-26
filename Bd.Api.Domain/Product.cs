@@ -20,12 +20,12 @@ namespace Bd.Api.Domain
 
         public string Description { get; set; }
 
-        public double Price { get; set; }
 
         public bool IsDeleted { get; set; }
 
         public bool IsBlocked { get; set; }
 
         public virtual List<OrderItem> OrderItems { get; set; }
+
     }
 }

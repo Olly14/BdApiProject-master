@@ -13,6 +13,7 @@ namespace Bd.Api.ModelMappers.DropDownListsMappers
         public DropDownListsDtoAutoMapperProfile()
         {
             CreateMap<Gender, GenderDto>().ReverseMap();
+            CreateMap<Prices, PricesDto>().ReverseMap();
         }
     }
 }

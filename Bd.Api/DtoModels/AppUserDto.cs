@@ -31,7 +31,7 @@ namespace Bd.Api.DtoModels
         public string PostCode { get; set; }
 
 
-        public GenderDto Gender { get; set; }
+        public PricesDto Gender { get; set; }
 
         public bool IsDeleted { get; set; }
 

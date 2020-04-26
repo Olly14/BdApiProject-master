@@ -15,6 +15,6 @@ namespace Bd.Api.Domain
         public string Type { get; set; }
 
         //Navigation property
-        public virtual IEnumerable<AppUser> AppUsers { get; set; }
+        public virtual ICollection<AppUser> AppUsers { get; set; }
     }
 }

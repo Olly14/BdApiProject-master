@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bd.Api.Migrations
 {
     [DbContext(typeof(BdContext))]
-    [Migration("20200406062307_firstMigrations")]
-    partial class firstMigrations
+    [Migration("20200426144524_firstMgr")]
+    partial class firstMgr
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,12 @@ namespace Bd.Api.Migrations
                     b.Property<string>("GenderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
@@ -79,6 +85,7 @@ namespace Bd.Api.Migrations
             modelBuilder.Entity("Bd.Api.Domain.Order", b =>
                 {
                     b.Property<string>("OrderId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AppUserId")
@@ -103,17 +110,16 @@ namespace Bd.Api.Migrations
             modelBuilder.Entity("Bd.Api.Domain.OrderItem", b =>
                 {
                     b.Property<string>("OrderItemId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Quantity")
@@ -131,19 +137,40 @@ namespace Bd.Api.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("Bd.Api.Domain.Prices", b =>
+                {
+                    b.Property<string>("PricesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PricesId");
+
+                    b.ToTable("Prices");
+                });
+
             modelBuilder.Entity("Bd.Api.Domain.Product", b =>
                 {
                     b.Property<string>("ProductId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
 
                     b.HasKey("ProductId");
 
@@ -170,15 +197,11 @@ namespace Bd.Api.Migrations
                 {
                     b.HasOne("Bd.Api.Domain.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("Bd.Api.Domain.Product", "Product")
                         .WithMany("OrderItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
                 });
 #pragma warning restore 612, 618
         }
