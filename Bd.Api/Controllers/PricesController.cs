@@ -54,6 +54,32 @@ namespace Bd.Api.Controllers
             return prices;
         }
 
+        [HttpGet("GetPricesByIdAndType/{id}/{type}")]
+        public async Task<ActionResult<PricesDto>> GetPricesByIdAndType(string id, string type)
+        {
+            var prices = _mapper.Map<PricesDto>(await _pricesRepository.FindByIdAndTypeAsync(id, type));
+
+            if (prices == null)
+            {
+                return NotFound();
+            }
+
+            return prices;
+        }
+
+        [HttpGet("GetPricesByType/{type}")]
+        public async Task<ActionResult<PricesDto>> GetPricesByType(string id, string type)
+        {
+            var prices = _mapper.Map<PricesDto>(await _pricesRepository.FindByTypeAsync(type));
+
+            if (prices == null)
+            {
+                return NotFound();
+            }
+
+            return prices;
+        }
+
         // PUT: api/Prices/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
