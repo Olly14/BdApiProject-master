@@ -10,6 +10,7 @@ namespace Bd.Api.Domain
         public Order()
         {
             OrderItems = new List<OrderItem>();
+            OrderProducts = new List<OrderProduct>();
         }
 
 
@@ -25,6 +26,8 @@ namespace Bd.Api.Domain
         public double TotalPrice { get; set; }
 
         public virtual List<OrderItem> OrderItems { get; set; }
+
+        public virtual List<OrderProduct> OrderProducts { get; set; }
         public AppUser AppUser { get; set; }
     }
 }

@@ -17,5 +17,7 @@ namespace Bd.Api.Data
         public DbSet<Gender> Genders { get; set; }
 
         public DbSet<Prices> Prices { get; set; }
+
+        public DbSet<OrderProduct> OrderProducts { get; set; }
     }
 }

@@ -12,7 +12,11 @@ namespace Bd.Api.Domain
 
         public string OrderId { get; set; }
 
-        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+
+        public string Description { get; set; }
+
+        //public string ProductId { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -22,6 +26,8 @@ namespace Bd.Api.Domain
 
         public Order Order { get; set; }
 
-        public Product Product { get; set; }
+        //public Product Product { get; set; }
+
+
     }
 }

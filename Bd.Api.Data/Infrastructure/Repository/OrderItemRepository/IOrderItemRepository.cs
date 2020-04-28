@@ -7,6 +7,6 @@ namespace Bd.Api.Data.Infrastructure.Repository.OrderItemRepository
 {
     public interface IOrderItemRepository : IRepository<OrderItem>
     {
-        Task<IEnumerable<OrderItem>> FindOrderItemsWithOrdersAndProductsAsync();
+        Task<IEnumerable<OrderItem>> FindOrderItemsByOrderIdAsync(string id);
     }
 }

@@ -15,9 +15,9 @@ namespace Bd.Api.Data.Infrastructure.Persistence.OrderItemsRepo
 
         }
 
-        public async Task<IEnumerable<OrderItem>> FindOrderItemsWithOrdersAndProductsAsync()
+        public async Task<IEnumerable<OrderItem>> FindOrderItemsByOrderIdAsync(string id)
         {
-            return await Task.Run(() => BdContext.OrderItems.Include(oi => oi.Order).Include(oi => oi.Product).OrderBy(oi => oi.CreatedDate));
+            return await Task.Run(() => BdContext.OrderItems.Where(oi => oi.OrderId == id));
         }
     }
 }

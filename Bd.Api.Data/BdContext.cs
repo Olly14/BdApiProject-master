@@ -29,15 +29,23 @@ namespace Bd.Api.Data
 
         private void ConfigureEntitiesRelationship(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(op => new {op.OrderId, op.ProductId });
+
             modelBuilder.Entity<OrderItem>()
                 .HasOne<Order>(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId);
 
-            modelBuilder.Entity<OrderItem>()
-             .HasOne<Product>(oi => oi.Product)
-             .WithMany(p => p.OrderItems)
+            modelBuilder.Entity<OrderProduct>()
+             .HasOne<Product>(op => op.Product)
+             .WithMany(p => p.OrderProducts)
              .HasForeignKey(oi => oi.ProductId);
+
+           modelBuilder.Entity<OrderProduct>()
+            .HasOne<Order>(op => op.Order)
+            .WithMany(o => o.OrderProducts)
+            .HasForeignKey(o => o.ProductId);
 
 
             modelBuilder.Entity<Order>()

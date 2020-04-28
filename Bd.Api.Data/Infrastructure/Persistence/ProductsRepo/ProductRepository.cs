@@ -19,7 +19,7 @@ namespace Bd.Api.Data.Infrastructure.Persistence.ProductsRepo
 
         public async Task<IEnumerable<Product>> FindPoductsWithOrderItemsAsync()
         {
-            return await Task.Run(() => BdContext.Products.Include(p => p.OrderItems).OrderBy(p => p.Name));
+            return await Task.Run(() => BdContext.Products.Include(p => p.OrderProducts).OrderBy(p => p.Name));
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Bd.Api.ModelMappers.OrderMappers
         {
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
+            CreateMap<OrderProduct, OrderProductDto>().ReverseMap();
         }
     }
 }

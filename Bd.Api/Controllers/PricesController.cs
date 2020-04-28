@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Bd.Api.Data;
-using Bd.Api.Domain;
-using Bd.Api.Data.Infrastructure.Repository.PricesRepository;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
+using Bank.Data.Infrastructure.Repository;
+using Bd.Api.Data.Infrastructure.Repository.PricesRepository;
+using Bd.Api.Domain;
 using Bd.Api.DtoModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bd.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class PricesController : ControllerBase
     {
-        private readonly BdContext _context;
 
         private readonly IPricesRepository _pricesRepository;
+        private readonly IUnitOfWork<Prices> _unitOfWorkPrices;
         private readonly CancellationToken _cancellationToken;
         private readonly IMapper _mapper;
 
-        public PricesController(BdContext context,
-            IMapper mapper,
-            IPricesRepository pricesRepository)
+
+        public PricesController(IMapper mapper,
+            IPricesRepository pricesRepository, IUnitOfWork<Prices> unitOfWork)
         {
             _mapper = mapper;
             _pricesRepository = pricesRepository;
-            _context = context;
+            _unitOfWorkPrices = unitOfWork;
         }
+
+
+
 
         // GET: api/Prices
         [HttpGet]
@@ -39,6 +39,7 @@ namespace Bd.Api.Controllers
         {
             return _mapper.Map<IEnumerable<PricesDto>>(await _pricesRepository.FindAllAsync());
         }
+
 
         // GET: api/Prices/5
         [HttpGet("{id}")]
@@ -54,6 +55,7 @@ namespace Bd.Api.Controllers
             return prices;
         }
 
+
         [HttpGet("GetPricesByIdAndType/{id}/{type}")]
         public async Task<ActionResult<PricesDto>> GetPricesByIdAndType(string id, string type)
         {
@@ -66,6 +68,7 @@ namespace Bd.Api.Controllers
 
             return prices;
         }
+
 
         [HttpGet("GetPricesByType/{type}")]
         public async Task<ActionResult<PricesDto>> GetPricesByType(string id, string type)
@@ -80,69 +83,41 @@ namespace Bd.Api.Controllers
             return prices;
         }
 
-        // PUT: api/Prices/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPrices(string id, Prices prices)
+        // POST: api/Prices
+        [HttpPost]
+        public async Task<ActionResult<PricesDto>> PostPrices(PricesDto prices)
         {
-            if (id != prices.PricesId)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
+                await _pricesRepository.AddAsync(_mapper.Map<Prices>(prices));
 
-            _context.Entry(prices).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PricesExists(id))
+                try
                 {
-                    return NotFound();
+                    await _unitOfWorkPrices.CommitAsync(_cancellationToken);
                 }
-                else
+                catch (Exception ex)
                 {
+                    var errMsg = ex.Message;
                     throw;
                 }
             }
 
-            return NoContent();
+            //_context.Orders.Add(order);
+            //await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetOrder", new { id = prices.PricesId }, prices);
         }
 
-        // POST: api/Prices
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Prices>> PostPrices(Prices prices)
+        // PUT: api/Prices/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            _context.Prices.Add(prices);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPrices", new { id = prices.PricesId }, prices);
         }
 
-        // DELETE: api/Prices/5
+        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Prices>> DeletePrices(string id)
+        public void Delete(int id)
         {
-            var prices = await _context.Prices.FindAsync(id);
-            if (prices == null)
-            {
-                return NotFound();
-            }
-
-            _context.Prices.Remove(prices);
-            await _context.SaveChangesAsync();
-
-            return prices;
-        }
-
-        private bool PricesExists(string id)
-        {
-            return _context.Prices.Any(e => e.PricesId == id);
         }
     }
 }

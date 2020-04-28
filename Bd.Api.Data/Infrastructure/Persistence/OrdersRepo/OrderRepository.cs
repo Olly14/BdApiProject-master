@@ -21,5 +21,12 @@ namespace Bd.Api.Data.Infrastructure.Persistence.OrdersRepo
         {
             return await Task.Run(() => BdContext.Orders.Include(o => o.OrderItems).OrderBy(o => o.CreatedDate));
         }
+
+        public async Task<Order> FindOrdersWithOrderItemsAsync(string id)
+        {
+            return await Task.Run(() => BdContext
+            .Orders
+            .Include(o => o.OrderItems).FirstOrDefault(o => o.OrderId == id));
+        }
     }
 }

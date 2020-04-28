@@ -11,7 +11,11 @@ namespace Bd.Api.DtoModels
 
         public string OrderId { get; set; }
 
-        public string ProductId { get; set; }
+        //public string ProductId { get; set; }
+        public string ProductName { get; set; }
+
+        public string Description { get; set; }
+
 
         public DateTime CreatedDate { get; set; }
 
@@ -21,7 +25,7 @@ namespace Bd.Api.DtoModels
 
         public OrderDto Order { get; set; }
 
-        public ProductDto Product { get; set; }
+        //public ProductDto Product { get; set; }
 
     }
 }

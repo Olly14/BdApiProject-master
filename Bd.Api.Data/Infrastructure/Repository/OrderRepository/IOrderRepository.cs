@@ -8,5 +8,7 @@ namespace Bd.Api.Data.Infrastructure.Repository.OrderRepository
     public interface IOrderRepository : IRepository<Order>
     {
         Task<IEnumerable<Order>> FindOrdersWithOrderItemsAsync();
+
+        Task<Order> FindOrdersWithOrderItemsAsync(string id);
     }
 }

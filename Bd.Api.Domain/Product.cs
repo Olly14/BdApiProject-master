@@ -10,7 +10,7 @@ namespace Bd.Api.Domain
     {
         public Product()
         {
-            OrderItems = new List<OrderItem>();
+            OrderProducts = new List<OrderProduct>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -25,7 +25,7 @@ namespace Bd.Api.Domain
 
         public bool IsBlocked { get; set; }
 
-        public virtual List<OrderItem> OrderItems { get; set; }
+        public virtual List<OrderProduct> OrderProducts { get; set; }
 
     }
 }

@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Bd.Api
 {
@@ -61,13 +62,19 @@ namespace Bd.Api
                 options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"), b => b.MigrationsAssembly("Bd.Api"));
             });
 
-
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
 
             services.AddScoped<IAppUserRepository, AppUserRepository>();
             services.AddScoped<IUnitOfWork<AppUser>, UnitOfWorkAppUserRepo>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUnitOfWork<Product>, UnitOfWorkProductRepo>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IUnitOfWork<Order>, UnitOfWorkOrderRepo>();
+            services.AddScoped<IUnitOfWork<OrderItem>, UnitOfWorkOrderItemRepo>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             services.AddScoped<IGenderRepository, GenderRepository>();
             services.AddScoped<IPricesRepository, PricesRepository>();
