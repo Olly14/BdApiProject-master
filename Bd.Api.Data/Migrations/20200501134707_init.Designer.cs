@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Bd.Api.Migrations
+namespace Bd.Api.Data.Migrations
 {
     [DbContext(typeof(BdContext))]
-    [Migration("20200426144524_firstMgr")]
-    partial class firstMgr
+    [Migration("20200501134707_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -116,14 +116,23 @@ namespace Bd.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<double>("TotalQuantityPrice")
+                        .HasColumnType("float");
 
                     b.Property<double>("UnitPrice")
                         .HasColumnType("float");
@@ -132,9 +141,22 @@ namespace Bd.Api.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.OrderProduct", b =>
+                {
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("OrderId", "ProductId");
+
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.Prices", b =>
@@ -198,10 +220,21 @@ namespace Bd.Api.Migrations
                     b.HasOne("Bd.Api.Domain.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.OrderProduct", b =>
+                {
+                    b.HasOne("Bd.Api.Domain.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Bd.Api.Domain.Product", "Product")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("ProductId");
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

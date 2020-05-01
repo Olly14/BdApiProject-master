@@ -11,7 +11,7 @@ namespace Bd.Api.Data
 
         public BdContext(DbContextOptions<BdContext> options) : base(options)
         {
-
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,15 +37,15 @@ namespace Bd.Api.Data
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId);
 
-            modelBuilder.Entity<OrderProduct>()
-             .HasOne<Product>(op => op.Product)
-             .WithMany(p => p.OrderProducts)
-             .HasForeignKey(oi => oi.ProductId);
+           // modelBuilder.Entity<OrderProduct>()
+           //  .HasOne<Product>(op => op.Product)
+           //  .WithMany(p => p.OrderProducts)
+           //  .HasForeignKey(oi => oi.ProductId);
 
-           modelBuilder.Entity<OrderProduct>()
-            .HasOne<Order>(op => op.Order)
-            .WithMany(o => o.OrderProducts)
-            .HasForeignKey(o => o.ProductId);
+           //modelBuilder.Entity<OrderProduct>()
+           // .HasOne<Order>(op => op.Order)
+           // .WithMany(o => o.OrderProducts)
+           // .HasForeignKey(o => o.ProductId);
 
 
             modelBuilder.Entity<Order>()

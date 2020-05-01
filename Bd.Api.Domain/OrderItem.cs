@@ -16,13 +16,15 @@ namespace Bd.Api.Domain
 
         public string Description { get; set; }
 
-        //public string ProductId { get; set; }
+        public string ProductType { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
         public double UnitPrice { get; set; }
 
         public int Quantity { get; set; }
+
+        public double TotalQuantityPrice { get; set; }
 
         public Order Order { get; set; }
 

@@ -59,7 +59,8 @@ namespace Bd.Api
 
             services.AddDbContext<BdContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"), b => b.MigrationsAssembly("Bd.Api"));
+                options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
+                    b => b.MigrationsAssembly("Bd.Api.Data"));
             });
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
