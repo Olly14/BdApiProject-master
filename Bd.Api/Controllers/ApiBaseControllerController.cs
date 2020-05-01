@@ -11,5 +11,6 @@ namespace Bd.Api.Controllers
     [ApiController]
     public class ApiBaseControllerController : ControllerBase
     {
+        public int MyProperty { get; set; }
     }
 }
