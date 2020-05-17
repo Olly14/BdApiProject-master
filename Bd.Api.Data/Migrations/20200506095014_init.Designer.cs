@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bd.Api.Data.Migrations
 {
     [DbContext(typeof(BdContext))]
-    [Migration("20200501134707_init")]
+    [Migration("20200506095014_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,8 @@ namespace Bd.Api.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ConfirmedPassword")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CountryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstLineOfAddress")
                         .HasColumnType("nvarchar(max)");
@@ -36,6 +36,9 @@ namespace Bd.Api.Data.Migrations
                     b.Property<string>("GenderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
@@ -46,13 +49,16 @@ namespace Bd.Api.Data.Migrations
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("OrderHistoryCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("PostCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondLineOfAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubjectId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Town")
@@ -63,9 +69,28 @@ namespace Bd.Api.Data.Migrations
 
                     b.HasKey("AppUserId");
 
+                    b.HasIndex("CountryId");
+
                     b.HasIndex("GenderId");
 
                     b.ToTable("AppUsers");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.Country", b =>
+                {
+                    b.Property<string>("CountryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CountryId");
+
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.Gender", b =>
@@ -107,6 +132,30 @@ namespace Bd.Api.Data.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Bd.Api.Domain.OrderHistory", b =>
+                {
+                    b.Property<string>("OrderHistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductIdDetail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderHistoryId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderHistories");
+                });
+
             modelBuilder.Entity("Bd.Api.Domain.OrderItem", b =>
                 {
                     b.Property<string>("OrderItemId")
@@ -142,6 +191,43 @@ namespace Bd.Api.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.OrderItemHistory", b =>
+                {
+                    b.Property<string>("OrderItemHistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderHistoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalQuantityPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("OrderItemHistoryId");
+
+                    b.HasIndex("OrderHistoryId");
+
+                    b.ToTable("OrderItemHistories");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.OrderProduct", b =>
@@ -201,6 +287,10 @@ namespace Bd.Api.Data.Migrations
 
             modelBuilder.Entity("Bd.Api.Domain.AppUser", b =>
                 {
+                    b.HasOne("Bd.Api.Domain.Country", null)
+                        .WithMany("AppUsers")
+                        .HasForeignKey("CountryId");
+
                     b.HasOne("Bd.Api.Domain.Gender", "Gender")
                         .WithMany("AppUsers")
                         .HasForeignKey("GenderId")
@@ -215,11 +305,29 @@ namespace Bd.Api.Data.Migrations
                         .HasForeignKey("AppUserId");
                 });
 
+            modelBuilder.Entity("Bd.Api.Domain.OrderHistory", b =>
+                {
+                    b.HasOne("Bd.Api.Domain.AppUser", "AppUser")
+                        .WithMany("OrderHistories")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Bd.Api.Domain.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+                });
+
             modelBuilder.Entity("Bd.Api.Domain.OrderItem", b =>
                 {
                     b.HasOne("Bd.Api.Domain.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.OrderItemHistory", b =>
+                {
+                    b.HasOne("Bd.Api.Domain.OrderHistory", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderHistoryId");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.OrderProduct", b =>

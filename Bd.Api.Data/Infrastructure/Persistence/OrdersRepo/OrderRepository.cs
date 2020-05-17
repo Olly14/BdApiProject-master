@@ -28,5 +28,20 @@ namespace Bd.Api.Data.Infrastructure.Persistence.OrdersRepo
             .Orders
             .Include(o => o.OrderItems).FirstOrDefault(o => o.OrderId == id));
         }
+
+        public async Task<IEnumerable<Order>> FindOrdersWithAppUsersAsync()
+        {
+            return await Task.Run(() => BdContext
+            .Orders
+            .Include(o => o.AppUser));
+        }
+
+        public async Task<IEnumerable<Order>> FindOrdersInProcessAsync()
+        {
+            return await Task.Run(() => BdContext
+                            .Orders
+                            //.Include(o => o.AppUser)
+                            .Where(o => o.Status == "InProcess"));
+        }
     }
 }

@@ -8,6 +8,7 @@ using Bank.Data.Infrastructure.Repository;
 using Bd.Api.Data.Infrastructure.Repository.OrderRepository;
 using Bd.Api.Domain;
 using Bd.Api.DtoModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -16,22 +17,36 @@ namespace Bd.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class OrdersController : ApiBaseController
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUnitOfWork<Order> _unitOfWorkOrder;
         private readonly CancellationToken _cancellationToken;
         private readonly IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
 
 
 
-        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUnitOfWork<Order> unitOfWork)
+        public OrdersController(IHttpContextAccessor httpContextAccessor,
+            IOrderRepository orderRepository,
+            IMapper mapper,
+            IUnitOfWork<Order> unitOfWork) : base(httpContextAccessor)
         {
             _orderRepository = orderRepository;
             _unitOfWorkOrder = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
 
             _cancellationToken = new CancellationToken();
+        }
+
+        // GET: api/Default
+        [HttpGet("GetOrdersWithAppUsers")]
+        public async Task<IEnumerable<OrderDto>> GetOrdersWithAppUsers()
+        {
+            var results = _mapper.Map<IEnumerable<OrderDto>>(await _orderRepository.FindOrdersWithAppUsersAsync());
+            return results;
+            //return _mapper.Map<IEnumerable<OrderDto>>(await _orderRepository.FindOrdersWithAppUsersAsync());
         }
 
         // GET: api/Default
@@ -41,6 +56,14 @@ namespace Bd.Api.Controllers
         public async Task<IEnumerable<OrderDto>> GetOrders()
         {
             return _mapper.Map<IEnumerable<OrderDto>>(await _orderRepository.FindAllAsync());
+        }
+
+
+        [HttpGet("GetOrdersInProcess")]
+        public async Task<IEnumerable<OrderDto>> GetOrdersInProcess()
+        {
+            var result =  _mapper.Map<IEnumerable<OrderDto>>(await _orderRepository.FindOrdersInProcessAsync());
+            return result;
         }
 
         // GET: api/Default/5
@@ -56,6 +79,22 @@ namespace Bd.Api.Controllers
             }
 
             return order;
+        }
+
+        [HttpGet("UpdateOrderStatus/{id}")]
+        //[Route("GetOrders/{id}")]
+        public async Task<ActionResult<OrderDto>> UpdateOrderStatus(string id)
+        {
+            var order = await _orderRepository.FindAsync(id);
+            order.Status = "Complete";
+            order = await _unitOfWorkOrder.UpdateAsync(_cancellationToken, order);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<OrderDto>(order);
         }
 
 

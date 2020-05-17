@@ -9,6 +9,11 @@ namespace Bd.Api.Data.Infrastructure.Repository.OrderRepository
     {
         Task<IEnumerable<Order>> FindOrdersWithOrderItemsAsync();
 
+        Task<IEnumerable<Order>> FindOrdersWithAppUsersAsync();
+
         Task<Order> FindOrdersWithOrderItemsAsync(string id);
+
+        Task<IEnumerable<Order>> FindOrdersInProcessAsync();
+
     }
 }

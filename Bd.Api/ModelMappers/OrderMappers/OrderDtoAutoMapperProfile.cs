@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bd.Api.ModelMappers.OrderMappers
+namespace Bd.Api.ModelMappers.OrderHistoryMappers
 {
     public class OrderDtoAutoMapperProfile : Profile
     {

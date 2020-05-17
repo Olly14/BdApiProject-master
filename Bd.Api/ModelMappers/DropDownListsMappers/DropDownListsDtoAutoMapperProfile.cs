@@ -14,6 +14,7 @@ namespace Bd.Api.ModelMappers.DropDownListsMappers
         {
             CreateMap<Gender, GenderDto>().ReverseMap();
             CreateMap<Prices, PricesDto>().ReverseMap();
+            CreateMap<Country, CountryDto>().ReverseMap();
         }
     }
 }

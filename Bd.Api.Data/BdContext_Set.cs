@@ -12,9 +12,15 @@ namespace Bd.Api.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<OrderHistory> OrderHistories { get; set; }
+
+        public DbSet<OrderItemHistory> OrderItemHistories { get; set; }
+
         public DbSet<OrderItem> OrderItems { get; set; }
 
         public DbSet<Gender> Genders { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
 
         public DbSet<Prices> Prices { get; set; }
 

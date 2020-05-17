@@ -99,10 +99,15 @@ namespace Bd.Api.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<ProductDto>> PostProduct(ProductDto product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {
+                await _productRepository.AddAsync(_mapper.Map<Product>(product));
+                await _unitOfWorkProduct.CommitAsync(_cancellationToken);
+                return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            }
+
 
             return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
         }

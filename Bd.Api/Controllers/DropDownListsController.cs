@@ -16,12 +16,16 @@ namespace Bd.Api.Controllers
     public class DropDownListsController : ControllerBase
     {
         private readonly IGenderRepository _genderRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly CancellationToken _cancellationToken;
         private readonly IMapper _mapper;
 
-        public DropDownListsController(IGenderRepository genderRepository, IMapper mapper)
+        public DropDownListsController(IGenderRepository genderRepository, 
+            ICountryRepository countryRepository, 
+            IMapper mapper)
         {
             _genderRepository = genderRepository;
+            _countryRepository = countryRepository;
             _mapper = mapper;
             _cancellationToken = new CancellationToken();
         }
@@ -40,6 +44,14 @@ namespace Bd.Api.Controllers
         {
             return _mapper.Map<GenderDto>(await _genderRepository.FindAsync(id));
         }
+
+        [HttpGet("GetCountries")]
+        //[Route("api/DropDownLists/GetCountries")]
+        public async Task<IEnumerable<CountryDto>> GetCountries()
+        {
+            return _mapper.Map<IEnumerable<CountryDto>>(await _countryRepository.FindAllAsync());
+        }
+
 
         // POST: api/DropDownLists
         [HttpPost]

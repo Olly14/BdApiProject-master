@@ -9,7 +9,6 @@ using Bd.Api.DtoModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Bd.Api.Controllers
 {

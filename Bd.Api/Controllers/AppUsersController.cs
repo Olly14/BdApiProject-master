@@ -17,7 +17,7 @@ namespace Bd.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppUsersController : ControllerBase
+    public class AppUsersController : ApiBaseController
     {
         private readonly BdContext _context;
 
@@ -25,6 +25,7 @@ namespace Bd.Api.Controllers
         private readonly IUnitOfWork<AppUser> _unitOfWorkAppUser;
         private readonly CancellationToken _cancellationToken;
         private readonly IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
 
 
 
@@ -34,11 +35,15 @@ namespace Bd.Api.Controllers
 
 
 
-        public AppUsersController(BdContext context, IAppUserRepository appUserRepository, IUnitOfWork<AppUser> unitOfWorkAppUser, IMapper mapper)
+        public AppUsersController(IHttpContextAccessor httpContextAccessor, BdContext context, 
+            IAppUserRepository appUserRepository, 
+            IUnitOfWork<AppUser> unitOfWorkAppUser,
+            IMapper mapper) : base(httpContextAccessor)
         {
             _appUserRepository = appUserRepository;
             _unitOfWorkAppUser = unitOfWorkAppUser;
             _cancellationToken = new CancellationToken();
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _context = context;
         }
@@ -55,7 +60,7 @@ namespace Bd.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUserDto>> GetAppUser(string id)
         {
-            var appUser = await _appUserRepository.FindAppUserWithOrderAsync(id);
+            var appUser = await _appUserRepository.FindAsync(id);
 
             if (appUser == null)
             {
@@ -69,33 +74,33 @@ namespace Bd.Api.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppUser(string id, AppUser appUser)
+        public async Task<IActionResult> PutAppUser(AppUserDto appUser)
         {
-            if (id != appUser.AppUserId)
-            {
-                return BadRequest();
-            }
-           
-            //_context.Entry(appUser).State = EntityState.Modified;
 
-            try
+            if (ModelState.IsValid)
             {
-                var updatedAppUser = await _unitOfWorkAppUser.UpdateAsync(_cancellationToken, appUser);
-                //await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AppUserExists(id))
+                try
                 {
-                    return NotFound();
+                    var updateModel = _mapper.Map<AppUser>(appUser);
+
+                    var updatedAppUser = await _unitOfWorkAppUser.
+                        UpdateAsync(_cancellationToken, updateModel);
+
+                    return NoContent();
                 }
-                else
+                catch (Exception ex)
                 {
+                    var errorMsg = ex.Message;
                     throw;
                 }
             }
 
-            return NoContent();
+
+            return NotFound();
+
+
+
+
         }
 
         // POST: api/AppUsers
