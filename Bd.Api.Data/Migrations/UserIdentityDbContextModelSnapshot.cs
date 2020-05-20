@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bd.Api.Data.Migrations
 {
-    [DbContext(typeof(BdContext))]
-    partial class BdContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UserIdentityDbContext))]
+    partial class UserIdentityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -31,11 +31,7 @@ namespace Bd.Api.Data.Migrations
                     b.Property<string>("FirstLineOfAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("GenderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsActive")
@@ -46,9 +42,6 @@ namespace Bd.Api.Data.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
@@ -133,7 +126,7 @@ namespace Bd.Api.Data.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.OrderHistory", b =>
@@ -194,7 +187,7 @@ namespace Bd.Api.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.OrderItemHistory", b =>
@@ -246,24 +239,7 @@ namespace Bd.Api.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
-                });
-
-            modelBuilder.Entity("Bd.Api.Domain.Prices", b =>
-                {
-                    b.Property<string>("PricesId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PricesId");
-
-                    b.ToTable("Prices");
+                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.Product", b =>
@@ -289,6 +265,105 @@ namespace Bd.Api.Data.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Bd.Api.Domain.User", b =>
+                {
+                    b.Property<string>("SubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("SubjectId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.UserClaim", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ClaimType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("ClaimValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("UserSubjectId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserSubjectId");
+
+                    b.ToTable("UserClaims");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.UserLogin", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LoginProvider")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("ProviderKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("UserSubjectId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserSubjectId");
+
+                    b.ToTable("UserLogins");
+                });
+
             modelBuilder.Entity("Bd.Api.Domain.AppUser", b =>
                 {
                     b.HasOne("Bd.Api.Domain.Country", "Country")
@@ -297,9 +372,7 @@ namespace Bd.Api.Data.Migrations
 
                     b.HasOne("Bd.Api.Domain.Gender", "Gender")
                         .WithMany("AppUsers")
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenderId");
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.Order", b =>
@@ -347,6 +420,27 @@ namespace Bd.Api.Data.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.User", b =>
+                {
+                    b.HasOne("Bd.Api.Domain.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.UserClaim", b =>
+                {
+                    b.HasOne("Bd.Api.Domain.User", "User")
+                        .WithMany("Claims")
+                        .HasForeignKey("UserSubjectId");
+                });
+
+            modelBuilder.Entity("Bd.Api.Domain.UserLogin", b =>
+                {
+                    b.HasOne("Bd.Api.Domain.User", "User")
+                        .WithMany("Logins")
+                        .HasForeignKey("UserSubjectId");
                 });
 #pragma warning restore 612, 618
         }

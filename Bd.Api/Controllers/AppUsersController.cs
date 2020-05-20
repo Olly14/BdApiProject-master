@@ -56,6 +56,13 @@ namespace Bd.Api.Controllers
             //return await _context.AppUsers.ToListAsync();
         }
 
+        [HttpGet("GetAppUsersWithoutOrders")]
+        public async Task<IEnumerable<AppUserDto>> GetAppUsersWithoutOrders()
+        {
+            return _mapper.Map<IEnumerable<AppUserDto>>(await _appUserRepository.FindAllAsync());
+            //return await _context.AppUsers.ToListAsync();
+        }
+
         // GET: api/AppUsers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUserDto>> GetAppUser(string id)
@@ -69,6 +76,20 @@ namespace Bd.Api.Controllers
 
             return Ok(_mapper.Map<AppUserDto>(appUser));
         }
+
+        [HttpGet("GetAppUserBySubjectId/{id}")]
+        public async Task<ActionResult<AppUserDto>> GetAppUserBySubjectId(string id)
+        {
+            var appUser = await _appUserRepository.FindAppUserBySubjectIdAsync(id);
+
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<AppUserDto>(appUser));
+        }
+
 
         // PUT: api/AppUsers/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

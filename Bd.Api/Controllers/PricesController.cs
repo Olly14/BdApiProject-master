@@ -89,7 +89,30 @@ namespace Bd.Api.Controllers
         }
 
 
+        [HttpGet("GetPricesCreated/{type}/{price}")]
+        public async Task<ActionResult<PricesDto>> GetPricesCreated(string type, double price)
+        {
+            if(!string.IsNullOrWhiteSpace(type) && price > 0)
+            {
+                var prices = new PricesDto()
+                {
+                    PricesId = Guid.NewGuid().ToString(),
+                    Type = type,
+                    Price = price
+                };
+                await _pricesRepository.AddAsync(_mapper.Map<Prices>(prices));
+                await _unitOfWorkPrices.CommitAsync(_cancellationToken);
+                //_context.Prices.Add(prices);
+                //await _context.SaveChangesAsync();
 
+                return CreatedAtAction("GetPrices", new { id = prices.PricesId }, prices);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
+        }
 
 
         // PUT: api/Prices/5

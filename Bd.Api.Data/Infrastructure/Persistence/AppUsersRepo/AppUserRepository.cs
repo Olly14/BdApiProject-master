@@ -15,6 +15,11 @@ namespace Bd.Api.Data.Infrastructure.Persistence
 
         }
 
+        public async Task<AppUser> FindAppUserBySubjectIdAsync(string id)
+        {
+            return await Task.Run(() => BdContext.AppUsers.FirstOrDefault(au => au.SubjectId == id));
+        }
+
         public async Task<IEnumerable<AppUser>> FindAppUsersWithOrderAsync()
         {
             return await Task.Run(() => BdContext.AppUsers.Include(au => au.Orders).OrderBy(au => au.UserName).ToListAsync());

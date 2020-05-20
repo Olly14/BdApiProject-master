@@ -19,6 +19,10 @@ namespace Bd.Api.Domain
 
         public string SubjectId { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string GenderId { get; set; }
 
         public string CountryId { get; set; }

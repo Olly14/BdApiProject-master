@@ -10,5 +10,7 @@ namespace Bd.Api.Data.Infrastructure.Repository.AppUserRepositiry
         Task<IEnumerable<AppUser>> FindAppUsersWithOrderAsync();
 
         Task<AppUser> FindAppUserWithOrderAsync(string id);
+
+        Task<AppUser> FindAppUserBySubjectIdAsync(string id);
     }
 }

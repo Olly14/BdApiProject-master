@@ -57,7 +57,7 @@ namespace Bd.Api.Controllers
         }
 
 
-        [HttpGet("GetOrderItemsByOrderHistoryId/{id}")]
+        [HttpGet("OrderItemHistories/{id}")]
         public async Task<IEnumerable<OrderItemHistory>> GetOrderItemsByOrderHistoryId(string id)
         {
             var orderItems = await _orderItemHistoryRepository.FindOrderItemsByOrderIdAsync(id);
