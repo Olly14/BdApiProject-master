@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bd.Api.Data;
@@ -15,7 +14,7 @@ using Bd.Api.DtoModels;
 
 namespace Bd.Api.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PricesController : ControllerBase
     {
@@ -114,6 +113,25 @@ namespace Bd.Api.Controllers
             
         }
 
+
+        [HttpGet("GetPricesUpdated/{id}/{price}")]
+        public async Task<IActionResult> GetPricesUpdated(string id, double price)
+        {
+            if (!string.IsNullOrWhiteSpace(id) && price > 0)
+            {
+                var pricesUpdate = await _pricesRepository.FindAsync(id);
+                pricesUpdate.Price = price;
+                await _unitOfWorkPrices.UpdateAsync(_cancellationToken,
+                    pricesUpdate);
+
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
 
         // PUT: api/Prices/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
