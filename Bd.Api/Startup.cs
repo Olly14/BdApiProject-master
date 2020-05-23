@@ -18,6 +18,7 @@ using Bd.Api.Data.Infrastructure.Repository.OrderItemRepository;
 using Bd.Api.Data.Infrastructure.Repository.OrderRepository;
 using Bd.Api.Data.Infrastructure.Repository.PricesRepository;
 using Bd.Api.Data.Infrastructure.Repository.ProductRepository;
+using Bd.Api.DbConfigurations;
 using Bd.Api.Domain;
 using Bd.Api.ModelMappers.AppUserMappers;
 using Bd.Api.ModelMappers.DropDownListsMappers;
@@ -79,16 +80,29 @@ namespace Bd.Api
 
             services.AddHttpContextAccessor();
 
-            services.AddDbContextPool<BdContext>(options =>
+            //services.AddDbContextPool<BdContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
+            //        b => b.MigrationsAssembly("Bd.Api.Data"));
+            //});
+            //services.AddDbContextPool<UserIdentityDbContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"), 
+            //        b => b.MigrationsAssembly("Bd.Api.Data"));
+            //});
+
+
+            services.AddDbContext<BdContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
-                    b => b.MigrationsAssembly("Bd.Api.Data"));
+                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
             });
-            services.AddDbContextPool<UserIdentityDbContext>(options =>
+            services.AddDbContext<UserIdentityDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"), 
-                    b => b.MigrationsAssembly("Bd.Api.Data"));
+                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKey.Replace("__", ":")]);
             });
+
+
+
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
