@@ -69,6 +69,7 @@ namespace Bd.Api
                     });
 
 
+
             //var mappingConfig = new MapperConfiguration(mc =>
             //{
             //    mc.AddProfile(new OrderDtoAutoMapperProfile());
