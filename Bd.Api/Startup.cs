@@ -57,7 +57,11 @@ namespace Bd.Api
                     .AddIdentityServerAuthentication(options =>
                     {   
                         // base-address of your identityserver
-                        options.Authority = "https://localhost:44314/";
+                        //options.Authority = "https://localhost:44314/";
+
+                        options.Authority = "https://myidp20200523224759.azurewebsites.net/";
+
+
                         options.RequireHttpsMetadata = true;
 
                         // name of the API resource
@@ -87,7 +91,7 @@ namespace Bd.Api
             //});
             //services.AddDbContextPool<UserIdentityDbContext>(options =>
             //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"), 
+            //    options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"),
             //        b => b.MigrationsAssembly("Bd.Api.Data"));
             //});
 
