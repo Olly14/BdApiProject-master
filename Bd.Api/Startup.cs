@@ -84,6 +84,8 @@ namespace Bd.Api
 
             services.AddHttpContextAccessor();
 
+            services.AddApplicationInsightsTelemetry();
+
             //services.AddDbContextPool<BdContext>(options =>
             //{
             //    options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
