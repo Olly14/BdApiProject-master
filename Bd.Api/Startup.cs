@@ -20,10 +20,6 @@ using Bd.Api.Data.Infrastructure.Repository.PricesRepository;
 using Bd.Api.Data.Infrastructure.Repository.ProductRepository;
 using Bd.Api.DbConfigurations;
 using Bd.Api.Domain;
-using Bd.Api.ModelMappers.AppUserMappers;
-using Bd.Api.ModelMappers.DropDownListsMappers;
-using Bd.Api.ModelMappers.OrderHistoryMappers;
-using Bd.Api.ModelMappers.ProductMappers;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,9 +27,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+
+
 
 namespace Bd.Api
 {
