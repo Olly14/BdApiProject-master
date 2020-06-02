@@ -56,7 +56,7 @@ namespace Bd.Api
                         // base-address of your identityserver
                         //options.Authority = "https://localhost:44314/";
 
-                        options.Authority = "https://myidp20200523224759.azurewebsites.net/";
+                        options.Authority = "https://myidp.azurewebsites.net";
 
 
                         options.RequireHttpsMetadata = true;
