@@ -102,7 +102,7 @@ namespace Bd.Api
             });
             services.AddDbContext<UserIdentityDbContext>(options =>
             {
-                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKey.Replace("__", ":")]);
+                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);
             });
 
 
@@ -131,7 +131,6 @@ namespace Bd.Api
             services.AddScoped<IPricesRepository, PricesRepository>();
             services.AddScoped<IUnitOfWork<Prices>, UnitOfWorkPricesRepo>();
 
-            ; services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,6 +16,13 @@
       "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MusicStore;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
     }
   },
+
+  "DataIdp": {
+    "DefaultConnection": {
+      "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MusicStore;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
+    }
+  },
+
   "ConnectionStrings": {
     "BdConnectionString": "server=(localdb)\\MSSQLLocalDB;database=BarAndDagDb;Trusted_Connection=true",
     "UserIdentityDbConnectionString": "server=(localdb)\\MSSQLLocalDB;database=IdentityDb;Trusted_Connection=true"
