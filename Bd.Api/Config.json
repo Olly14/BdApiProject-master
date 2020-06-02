@@ -11,7 +11,7 @@
     "SiteTitle": "Bd Api App",
     "CacheDbResults": true
   },
-  "Data": {
+  "DataAppUser": {
     "DefaultConnection": {
       "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MusicStore;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
     }

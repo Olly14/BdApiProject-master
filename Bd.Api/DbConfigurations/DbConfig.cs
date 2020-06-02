@@ -9,6 +9,6 @@ namespace Bd.Api.DbConfigurations
     {
         public const string ConnectionStringKeyIdp = "DataIdp__DefaultConnection__ConnectionString";
 
-        public const string ConnectionStringKeyAppUser = "Data__DefaultConnection__ConnectionString";
+        public const string ConnectionStringKeyAppUser = "DataAppUser__DefaultConnection__ConnectionString";
     }
 }
