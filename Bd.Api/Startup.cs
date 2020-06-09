@@ -100,10 +100,10 @@ namespace Bd.Api
             //});
 
 
-            //services.AddDbContext<BdContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
-            //});
+            services.AddDbContext<BdContext>(options =>
+            {
+                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
+            });
 
 
 
