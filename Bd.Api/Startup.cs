@@ -87,26 +87,26 @@ namespace Bd.Api
 
             services.AddApplicationInsightsTelemetry();
 
-            services.AddDbContextPool<BdContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
-                    b => b.MigrationsAssembly("Bd.Api.Data"));
-            });
-            services.AddDbContextPool<UserIdentityDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"),
-                    b => b.MigrationsAssembly("Bd.Api.Data"));
-            });
+            //services.AddDbContextPool<BdContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
+            //        b => b.MigrationsAssembly("Bd.Api.Data"));
+            //});
+            //services.AddDbContextPool<UserIdentityDbContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"),
+            //        b => b.MigrationsAssembly("Bd.Api.Data"));
+            //});
 
 
-            //services.AddDbContext<BdContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
-            //});
-            //services.AddDbContext<UserIdentityDbContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);
-            //});
+            services.AddDbContext<BdContext>(options =>
+            {
+                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
+            });
+            services.AddDbContext<UserIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);
+            });
 
 
 
