@@ -23,10 +23,10 @@
     }
   },
 
-  "ConnectionStrings": {
-    "BdConnectionString": "server=(localdb)\\MSSQLLocalDB;database=BarAndDagDb;Trusted_Connection=true",
-    "UserIdentityDbConnectionString": "server=(localdb)\\MSSQLLocalDB;database=IdentityDb;Trusted_Connection=true"
-  },
+  //"ConnectionStrings": {
+  //  "BdConnectionString": "server=(localdb)\\MSSQLLocalDB;database=BarAndDagDb;Trusted_Connection=true",
+  //  "UserIdentityDbConnectionString": "server=(localdb)\\MSSQLLocalDB;database=IdentityDb;Trusted_Connection=true"
+  //},
   "AllowedHosts": "*",
   "ApplicationInsights": {
     "InstrumentationKey": "c69b6568-8549-440a-aa40-eb71528351f2"
