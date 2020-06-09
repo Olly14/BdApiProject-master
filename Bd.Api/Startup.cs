@@ -105,8 +105,6 @@ namespace Bd.Api
                 options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
             });
 
-
-
             services.AddDbContext<UserIdentityDbContext>(options =>
             {
                 options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);

@@ -13,13 +13,13 @@
   },
   "DataAppUser": {
     "DefaultConnection": {
-      "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MusicStore;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
+      "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=BdDb;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
     }
   },
 
   "DataIdp": {
     "DefaultConnection": {
-      "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MusicStore;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
+      "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=IdpDb;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
     }
   },
 
