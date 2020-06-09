@@ -65,7 +65,7 @@ namespace Bd.Api
                         options.RequireHttpsMetadata = true;
 
                         // name of the API resource
-                        options.ApiName = "Bd.Api";
+                        options.ApiName = "Bd.Web.Api";
                     });
 
 
