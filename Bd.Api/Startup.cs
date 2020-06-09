@@ -92,6 +92,7 @@ namespace Bd.Api
             //    options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
             //        b => b.MigrationsAssembly("Bd.Api.Data"));
             //});
+
             //services.AddDbContextPool<UserIdentityDbContext>(options =>
             //{
             //    options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"),
@@ -99,10 +100,13 @@ namespace Bd.Api
             //});
 
 
-            services.AddDbContext<BdContext>(options =>
-            {
-                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
-            });
+            //services.AddDbContext<BdContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
+            //});
+
+
+
             services.AddDbContext<UserIdentityDbContext>(options =>
             {
                 options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);
