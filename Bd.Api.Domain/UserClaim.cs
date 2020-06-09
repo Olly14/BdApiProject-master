@@ -25,12 +25,12 @@ namespace Bd.Api.Domain
         [Key]
         [MaxLength(50)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; } 
+        public string Id { get; set; }
 
 
         //Navigation property
-        [Required]
-        [MaxLength(50)]
+        //[Required]
+        //[MaxLength(50)]
         public string SubjectId { get; set; }
 
         [Required]

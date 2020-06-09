@@ -110,10 +110,21 @@ namespace Bd.Web.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            await _userRepository.AddAsync(_mapper.Map<User>(user));
-            await _unitOfWorkUser.CommitAsync(_cancellationToken);
+            if (ModelState.IsValid)
+            {
+                if (UserNameAlreadyExists(user.Username))
+                {
+                    ModelState.AddModelError("Username", "username is already in use!");
+                    return user;
+                }
+                await _userRepository.AddAsync(_mapper.Map<User>(user));
+                await _unitOfWorkUser.CommitAsync(_cancellationToken);
 
-            return CreatedAtAction("GetUser", new { id = user.SubjectId }, user);
+                return CreatedAtAction("GetUser", new { id = user.SubjectId }, user);
+            }
+
+            ModelState.AddModelError("InvalidState", "One or more of the fields  is incorrect!");
+            return user;
         }
 
         // DELETE: api/Users/5
@@ -135,6 +146,11 @@ namespace Bd.Web.Api.Controllers
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.SubjectId == id);
+        }
+
+        private bool UserNameAlreadyExists(string username)
+        {
+            return _context.Users.Any(e => e.Username == username);
         }
     }
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using Bank.Data.Infrastructure.Repository;
 using Bd.Api.Data;
 using Bd.Api.Data.Infrastructure.Persistence;
+using Bd.Api.Data.Infrastructure.Persistence.AdministrationRepo;
 using Bd.Api.Data.Infrastructure.Persistence.AppUsersRepo;
 using Bd.Api.Data.Infrastructure.Persistence.DropDownListsRepo;
 using Bd.Api.Data.Infrastructure.Persistence.DropDownListsRepository;
@@ -10,6 +11,7 @@ using Bd.Api.Data.Infrastructure.Persistence.OrderItemsRepo;
 using Bd.Api.Data.Infrastructure.Persistence.OrdersRepo;
 using Bd.Api.Data.Infrastructure.Persistence.PricesRepo;
 using Bd.Api.Data.Infrastructure.Persistence.ProductsRepo;
+using Bd.Api.Data.Infrastructure.Repository.Administrations;
 using Bd.Api.Data.Infrastructure.Repository.AppUserRepositiry;
 using Bd.Api.Data.Infrastructure.Repository.AppUserRepository;
 using Bd.Api.Data.Infrastructure.Repository.IDropDownListsRepository;
@@ -54,6 +56,7 @@ namespace Bd.Api
                     .AddIdentityServerAuthentication(options =>
                     {   
                         // base-address of your identityserver
+                        //options.Authority = "https://localhost:44316/";
                         //options.Authority = "https://localhost:44314/";
 
                         options.Authority = "https://myidp.azurewebsites.net";
@@ -84,26 +87,26 @@ namespace Bd.Api
 
             services.AddApplicationInsightsTelemetry();
 
-            //services.AddDbContextPool<BdContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
-            //        b => b.MigrationsAssembly("Bd.Api.Data"));
-            //});
-            //services.AddDbContextPool<UserIdentityDbContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"),
-            //        b => b.MigrationsAssembly("Bd.Api.Data"));
-            //});
+            services.AddDbContextPool<BdContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("BdConnectionString"),
+                    b => b.MigrationsAssembly("Bd.Api.Data"));
+            });
+            services.AddDbContextPool<UserIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("UserIdentityDbConnectionString"),
+                    b => b.MigrationsAssembly("Bd.Api.Data"));
+            });
 
 
-            services.AddDbContext<BdContext>(options =>
-            {
-                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
-            });
-            services.AddDbContext<UserIdentityDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);
-            });
+            //services.AddDbContext<BdContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyAppUser.Replace("__", ":")]);
+            //});
+            //services.AddDbContext<UserIdentityDbContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration[DbConfig.ConnectionStringKeyIdp.Replace("__", ":")]);
+            //});
 
 
 
@@ -117,6 +120,10 @@ namespace Bd.Api
             services.AddScoped<IUnitOfWork<AppUser>, UnitOfWorkAppUserRepo>();
             services.AddScoped<IUserRepository, UserIdentityRepository>();
             services.AddScoped<IUnitOfWork<User>, UnitOfWorkUserRepo>();
+
+            services.AddScoped<IUserClaimRepository, UserClaimRepository>();
+            services.AddScoped<IUnitOfWork<UserClaim>, UnitOfWorkUserClaim>();
+
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUnitOfWork<Product>, UnitOfWorkProductRepo>();
             services.AddScoped<IOrderRepository, OrderRepository>();

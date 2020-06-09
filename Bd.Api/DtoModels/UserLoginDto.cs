@@ -25,7 +25,7 @@ namespace Bd.Web.Api.DtoModels
         public Guid Id { get; set; }
 
 
-        public string SubjectId { get; set; }
+        //public string SubjectId { get; set; }
 
 
         public string LoginProvider { get; set; }
@@ -34,6 +34,6 @@ namespace Bd.Web.Api.DtoModels
         public string ProviderKey { get; set; }
 
         //Navigation property
-        public UserDto User { get; set; }
+        //public UserDto User { get; set; }
     }
 }

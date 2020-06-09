@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Bd.Api.Data.Migrations.UserIdentityDb
+namespace Bd.Api.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class newMgr : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,20 +27,19 @@ namespace Bd.Api.Data.Migrations.UserIdentityDb
                 columns: table => new
                 {
                     Id = table.Column<string>(maxLength: 50, nullable: false),
-                    SubjectId = table.Column<string>(maxLength: 50, nullable: false),
+                    SubjectId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(maxLength: 250, nullable: false),
-                    ClaimValue = table.Column<string>(maxLength: 250, nullable: false),
-                    UserSubjectId = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserClaims_Users_UserSubjectId",
-                        column: x => x.UserSubjectId,
+                        name: "FK_UserClaims_Users_SubjectId",
+                        column: x => x.SubjectId,
                         principalTable: "Users",
                         principalColumn: "SubjectId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,31 +47,30 @@ namespace Bd.Api.Data.Migrations.UserIdentityDb
                 columns: table => new
                 {
                     Id = table.Column<string>(maxLength: 50, nullable: false),
-                    SubjectId = table.Column<string>(maxLength: 50, nullable: false),
+                    SubjectId = table.Column<string>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 250, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 250, nullable: false),
-                    UserSubjectId = table.Column<string>(nullable: true)
+                    ProviderKey = table.Column<string>(maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserLogins", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserLogins_Users_UserSubjectId",
-                        column: x => x.UserSubjectId,
+                        name: "FK_UserLogins_Users_SubjectId",
+                        column: x => x.SubjectId,
                         principalTable: "Users",
                         principalColumn: "SubjectId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_UserSubjectId",
+                name: "IX_UserClaims_SubjectId",
                 table: "UserClaims",
-                column: "UserSubjectId");
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLogins_UserSubjectId",
+                name: "IX_UserLogins_SubjectId",
                 table: "UserLogins",
-                column: "UserSubjectId");
+                column: "SubjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

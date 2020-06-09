@@ -30,8 +30,8 @@ namespace Bd.Api.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        //[Required]
+        //[MaxLength(50)]
         public string SubjectId { get; set; }
 
         [Required]

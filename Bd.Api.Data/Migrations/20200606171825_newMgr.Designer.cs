@@ -3,14 +3,16 @@ using Bd.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Bd.Api.Data.Migrations.UserIdentityDb
+namespace Bd.Api.Data.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    partial class UserIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200606171825_newMgr")]
+    partial class newMgr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,15 +69,11 @@ namespace Bd.Api.Data.Migrations.UserIdentityDb
 
                     b.Property<string>("SubjectId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("UserSubjectId")
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserSubjectId");
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("UserClaims");
                 });
@@ -99,15 +97,11 @@ namespace Bd.Api.Data.Migrations.UserIdentityDb
 
                     b.Property<string>("SubjectId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("UserSubjectId")
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserSubjectId");
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("UserLogins");
                 });
@@ -116,14 +110,18 @@ namespace Bd.Api.Data.Migrations.UserIdentityDb
                 {
                     b.HasOne("Bd.Api.Domain.User", "User")
                         .WithMany("Claims")
-                        .HasForeignKey("UserSubjectId");
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Bd.Api.Domain.UserLogin", b =>
                 {
                     b.HasOne("Bd.Api.Domain.User", "User")
                         .WithMany("Logins")
-                        .HasForeignKey("UserSubjectId");
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
