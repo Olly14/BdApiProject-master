@@ -8,6 +8,7 @@ using Bank.Data.Infrastructure.Repository;
 using Bd.Api.Data.Infrastructure.Repository.OrderRepository;
 using Bd.Api.Domain;
 using Bd.Api.DtoModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace Bd.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ApiBaseController
