@@ -12,9 +12,12 @@ using Bank.Data.Infrastructure.Repository;
 using System.Threading;
 using AutoMapper;
 using Bd.Api.DtoModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bd.Api.Controllers
 {
+
+    [Authorize]
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
