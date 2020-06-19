@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Bd.Api.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
